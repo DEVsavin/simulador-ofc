@@ -52,8 +52,8 @@ public class EstacaoDeTransferencia {
     public void gerarNovoCaminhaoGrande(int tempoAtual) {
         this.caminhaoGrandeAtual = new CaminhaoGrande();
         System.out.println("[ESTAÇÃO " + nomeEstacao + "] Novo caminhão grande criado.");
-        SimuladorGUI.updateTruck("G" + caminhaoGrandeAtual.getId(), "Aguardando", "Estacao " + this.nomeEstacao);
-        SimuladorGUI.pause();
+        SimuladorGUI.atualizarCaminhao("G" + caminhaoGrandeAtual.getId(), "Aguardando", "Estacao " + this.nomeEstacao);
+        SimuladorGUI.pausar();
         descarregarFilaEspera(tempoAtual);
     }
 
@@ -124,7 +124,7 @@ public class EstacaoDeTransferencia {
         System.out.printf("| %-18s | %-28s |%n", "Status", "Chegada confirmada");
 
         if (caminhaoGrandeAtual == null || caminhaoGrandeAtual.estaCheio()) {
-            SimuladorGUI.updateTruck(caminhao.getId(), "Na Fila", "Estacao " + this.nomeEstacao);
+            SimuladorGUI.atualizarCaminhao(caminhao.getId(), "Na Fila", "Estacao " + this.nomeEstacao);
             filaCaminhoes.enqueue(caminhao);
             System.out.printf("| %-18s | %-28d |%n", "Tamanho da Fila", filaCaminhoes.size());
 
@@ -136,7 +136,7 @@ public class EstacaoDeTransferencia {
                 System.out.printf("| %-18s | %-28s |%n", "Evento Agendado", "Caminhão grande às " + GerenciadorTempo.formatarHorarioSimulado(tempoLimite));
             }
         } else {
-            SimuladorGUI.updateTruck(caminhao.getId(), "Descarregando", "Estacao " + this.nomeEstacao);
+            SimuladorGUI.atualizarCaminhao(caminhao.getId(), "Descarregando", "Estacao " + this.nomeEstacao);
 
             if (caminhao.getEventoAgendado() != null) {
                 AgendaEventos.removerEvento(caminhao.getEventoAgendado());

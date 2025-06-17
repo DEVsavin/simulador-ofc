@@ -96,8 +96,8 @@ public class CaminhaoGrande {
     public void descarregar() {
         System.out.println("Caminhão grande #" + id + " foi para o aterro com " + cargaAtual + " unidades de lixo.");
         String truckId = "G" + id;
-        SimuladorGUI.updateTruck(truckId, "Indo p/ Aterro", "Aterro");
-        SimuladorGUI.pause();
+        SimuladorGUI.atualizarCaminhao(truckId, "Indo p/ Aterro", "Aterro");
+        SimuladorGUI.pausar();
         cargaAtual = 0;
         carregando = false;
     }

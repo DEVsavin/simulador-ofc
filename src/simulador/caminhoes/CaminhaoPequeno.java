@@ -63,8 +63,8 @@ public class CaminhaoPequeno {
      * @param estatisticas     O objeto de estatísticas do dia, para registrar a coleta.
      */
     public void realizarColeta(int tempoAtual, Zona zona, GerenciadorZonas gerenciadorZonas, EstatisticasDia estatisticas) {
-        SimuladorGUI.updateTruck(this.id, "Coletando", zona.getNome());
-        SimuladorGUI.pause();
+        SimuladorGUI.atualizarCaminhao(this.id, "Coletando", zona.getNome());
+        SimuladorGUI.pausar();
 
         if (zona.getLixoAcumulado() == 0) {
             System.out.println("  • Zona " + zona.getNome() + " está limpa. Nenhuma coleta realizada pelo caminhão " + this.id);

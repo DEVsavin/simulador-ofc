@@ -64,10 +64,10 @@ public class EventoIniciarTransferencia extends Evento {
         EstacaoDeTransferencia estacaoDestino = this.gerenciadorZonas.getEstacaoPara(zonaOrigem);
 
         /** Atualiza a UI para mostrar que o caminhão está em trânsito**/
-        SimuladorGUI.updateTruck(caminhaoPequeno.getId(), "Indo p/ Estação " + estacaoDestino.getNomeEstacao(), estacaoDestino.getNomeEstacao());
+        SimuladorGUI.atualizarCaminhao(caminhaoPequeno.getId(), "Indo p/ Estação " + estacaoDestino.getNomeEstacao(), estacaoDestino.getNomeEstacao());
 
         /** Pausa a simulação para que a animação seja visível**/
-        SimuladorGUI.pause();
+        SimuladorGUI.pausar();
 
         int tempoAtual = getTempo();
         int cargaAtual = caminhaoPequeno.getCargaAtual();

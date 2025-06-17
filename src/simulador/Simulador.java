@@ -42,8 +42,8 @@ public class Simulador {
         EstacaoDeTransferencia estB = new EstacaoDeTransferencia("B");
 
         // Atualiza interface gráfica com os caminhões grandes nas estações
-        SimuladorGUI.updateTruck("G" + estA.getCaminhaoGrandeAtual().getId(), "Aguardando", "Estacao A");
-        SimuladorGUI.updateTruck("G" + estB.getCaminhaoGrandeAtual().getId(), "Aguardando", "Estacao B");
+        SimuladorGUI.atualizarCaminhao("G" + estA.getCaminhaoGrandeAtual().getId(), "Aguardando", "Estacao A");
+        SimuladorGUI.atualizarCaminhao("G" + estB.getCaminhaoGrandeAtual().getId(), "Aguardando", "Estacao B");
 
         // Inicializa o gerenciador de zonas e vincula às estações
         GerenciadorZonas gerenciadorZonas = new GerenciadorZonas(estA, estB);
