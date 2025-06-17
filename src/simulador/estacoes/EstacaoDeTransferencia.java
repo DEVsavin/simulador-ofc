@@ -1,6 +1,6 @@
 package simulador.estacoes;
 
-import simulador.SimuladorGUI; // Importa a classe da interface gráfica
+import simulador.SimuladorGUI;
 import estruturas.filas.Fila;
 import simulador.caminhoes.CaminhaoGrande;
 import simulador.caminhoes.CaminhaoPequeno;
@@ -13,7 +13,10 @@ import simulador.eventos.EventoVerificarEsperaCaminhaoGrande;
 import simulador.zona.GerenciadorZonas;
 
 /**
- * Gerencia uma estação de transferência de lixo.
+ * Modela uma estação de transbordo de lixo, um ponto central onde caminhões
+ * pequenos descarregam seu lixo para ser consolidado em um caminhão grande.
+ * Esta classe gerencia a fila de espera de caminhões pequenos e o ciclo de vida
+ * (carregamento, despacho) dos caminhões grandes.
  */
 public class EstacaoDeTransferencia {
     private String nomeEstacao;
@@ -22,43 +25,76 @@ public class EstacaoDeTransferencia {
     private GerenciadorZonas gerenciadorZonas;
 
     /**
-     * Cria uma estação de transferência.
-     * @param nomeEstacao Nome da estação
+     * Cria uma nova estação de transferência com um nome e um caminhão grande inicial.
+     * @param nomeEstacao O nome da estação (ex: "A", "B").
      */
     public EstacaoDeTransferencia(String nomeEstacao) {
         this.nomeEstacao = nomeEstacao;
         this.caminhaoGrandeAtual = new CaminhaoGrande();
     }
 
+    /**
+     * Define a referência ao {@link GerenciadorZonas}.
+     * Essencial para que a estação possa agendar os próximos eventos dos caminhões pequenos,
+     * como o retorno para uma nova coleta.
+     * @param gerenciador A instância do gerenciador de zonas da simulação.
+     */
     public void setGerenciadorZonas(GerenciadorZonas gerenciador) {
         this.gerenciadorZonas = gerenciador;
     }
 
+    /**
+     * Substitui o caminhão grande atual por um novo.
+     * Após a chegada do novo caminhão, tenta imediatamente descarregar os caminhões
+     * pequenos que porventura estejam na fila de espera.
+     * @param tempoAtual O tempo da simulação em que o novo caminhão é gerado.
+     */
     public void gerarNovoCaminhaoGrande(int tempoAtual) {
         this.caminhaoGrandeAtual = new CaminhaoGrande();
         System.out.println("[ESTAÇÃO " + nomeEstacao + "] Novo caminhão grande criado.");
-        // Para a UI, podemos representar a chegada de um novo caminhão grande
         SimuladorGUI.updateTruck("G" + caminhaoGrandeAtual.getId(), "Aguardando", "Estacao " + this.nomeEstacao);
         SimuladorGUI.pause();
         descarregarFilaEspera(tempoAtual);
     }
 
+    /**
+     * Retorna o nome da estação.
+     * @return O nome da estação.
+     */
     public String getNomeEstacao() {
         return nomeEstacao;
     }
 
+    /**
+     * Retorna o caminhão grande que está atualmente na estação.
+     * @return A instância do {@link CaminhaoGrande} atual.
+     */
     public CaminhaoGrande getCaminhaoGrandeAtual() {
         return caminhaoGrandeAtual;
     }
 
+    /**
+     * Retorna a fila de caminhões pequenos que estão aguardando para descarregar.
+     * @return A instância da {@link Fila} de caminhões.
+     */
     public Fila<CaminhaoPequeno> getFilaCaminhoes() {
         return filaCaminhoes;
     }
 
+    /**
+     * Verifica se o caminhão grande atual pode receber mais lixo.
+     * @return {@code true} se o caminhão não estiver cheio, {@code false} caso contrário.
+     */
     public boolean temCaminhaoGrandeDisponivel() {
         return caminhaoGrandeAtual != null && !caminhaoGrandeAtual.estaCheio();
     }
 
+    /**
+     * Libera o caminhão grande atual para ir ao aterro sanitário.
+     * Este método cancela qualquer evento de verificação de espera pendente para o caminhão
+     * que partiu e aciona a geração de um novo caminhão para substituí-lo.
+     * @param tempoAtual O tempo da simulação em que o despacho ocorre.
+     */
     public void despacharCaminhaoGrande(int tempoAtual) {
         if (caminhaoGrandeAtual != null) {
             if (caminhaoGrandeAtual.getEventoDeVerificacao() != null) {
@@ -70,6 +106,14 @@ public class EstacaoDeTransferencia {
         }
     }
 
+    /**
+     * Ponto de entrada para um {@link CaminhaoPequeno} que chega à estação.
+     * O método avalia se o caminhão grande atual pode receber a carga. Se sim,
+     * o descarregamento é imediato. Se não (porque o caminhão grande está cheio ou ausente),
+     * o caminhão pequeno é colocado em uma fila de espera.
+     * @param caminhao O caminhão pequeno que chegou.
+     * @param tempoAtual O tempo da simulação em que a chegada ocorre.
+     */
     public void receberCaminhaoPequeno(CaminhaoPequeno caminhao, int tempoAtual) {
         System.out.println("+--------------------------------------------------+");
         System.out.println("|          DESCARREGAMENTO NA ESTAÇÃO              |");
@@ -80,10 +124,7 @@ public class EstacaoDeTransferencia {
         System.out.printf("| %-18s | %-28s |%n", "Status", "Chegada confirmada");
 
         if (caminhaoGrandeAtual == null || caminhaoGrandeAtual.estaCheio()) {
-            // --- LINHA ALTERADA ---
-            // Atualiza a UI para mostrar o caminhão na fila da estação
             SimuladorGUI.updateTruck(caminhao.getId(), "Na Fila", "Estacao " + this.nomeEstacao);
-
             filaCaminhoes.enqueue(caminhao);
             System.out.printf("| %-18s | %-28d |%n", "Tamanho da Fila", filaCaminhoes.size());
 
@@ -95,8 +136,6 @@ public class EstacaoDeTransferencia {
                 System.out.printf("| %-18s | %-28s |%n", "Evento Agendado", "Caminhão grande às " + GerenciadorTempo.formatarHorarioSimulado(tempoLimite));
             }
         } else {
-            // --- LINHA ALTERADA ---
-            // Atualiza a UI para mostrar o caminhão descarregando na estação
             SimuladorGUI.updateTruck(caminhao.getId(), "Descarregando", "Estacao " + this.nomeEstacao);
 
             if (caminhao.getEventoAgendado() != null) {
@@ -145,6 +184,12 @@ public class EstacaoDeTransferencia {
         System.out.println();
     }
 
+    /**
+     * Processa a fila de caminhões pequenos que estão em espera.
+     * Os caminhões são retirados da fila e descarregam sua carga no caminhão grande
+     * até que a fila de espera esvazie ou o caminhão grande atinja sua capacidade máxima.
+     * @param tempoAtual O tempo atual da simulação, para referência de log.
+     */
     private void descarregarFilaEspera(int tempoAtual) {
         while (!filaCaminhoes.isEmpty() && !caminhaoGrandeAtual.estaCheio()) {
             CaminhaoPequeno caminhaoFila = filaCaminhoes.poll();

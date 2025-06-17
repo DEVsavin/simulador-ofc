@@ -10,7 +10,6 @@ public class Main {
     /**
      * Ponto de entrada da aplicação, executa a simulação.
      *
-     * @param args Argumentos de linha de comando (não utilizados)
      */
     public static void main(String[] args) {
         Application.launch(SimuladorGUI.class, args);

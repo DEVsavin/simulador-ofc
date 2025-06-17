@@ -1,33 +1,35 @@
 package simulador.configuracao;
 
 /**
- * Guarda os números importantes para o simulador de coleta de lixo funcionar.
+ * Centraliza todas as constantes e parâmetros numéricos da simulação.
  * <p>
- * Esta classe tem valores fixos, como tempos, quantidades de lixo e horários, usados em todo o sistema.
+ * Esta classe utiliza apenas atributos estáticos e finais (constantes) para
+ * garantir que os valores sejam consistentes e fáceis de modificar em um
+ * único local. O construtor é privado para impedir a instanciação.
  */
 public class configuracao {
 
-    // ==================== TEMPOS DE TRABALHO ====================
+    /* ==================== TEMPOS DE TRABALHO ==================== */
 
     /**
-     * Minutos para descarregar 1 tonelada de lixo.
+     * Minutos necessários para descarregar 1 tonelada de lixo.
      */
     public static final int TEMPO_DESCARGA_POR_TONELADA = 3;
 
     /**
-     * Minutos para coletar 1 tonelada de lixo.
+     * Minutos necessários para coletar 1 tonelada de lixo.
      */
     public static final int TEMPO_COLETA_POR_TONELADA = 10;
 
-    // = TEMPO DE VIAGENS DOS CAMINHÕES
+    /* ==================== TEMPO DE VIAGENS DOS CAMINHÕES ==================== */
 
     /**
-     * Tempo mínimo de viagem em horários de muito trânsito (em minutos).
+     * Tempo mínimo de viagem em horários de pico (em minutos).
      */
     public static final int TEMPO_MIN_PICO = 20;
 
     /**
-     * Tempo máximo de viagem em horários de muito trânsito (em minutos).
+     * Tempo máximo de viagem em horários de pico (em minutos).
      */
     public static final int TEMPO_MAX_PICO = 60;
 
@@ -41,144 +43,85 @@ public class configuracao {
      */
     public static final int TEMPO_MAX_FORA_PICO = 35;
 
-    /**
-     * Quantidade máxima de viagens por dia para caminhões pequenos.
-     */
 
+    /* ==================== PARÂMETROS DE CRIAÇÃO DE CAMINHÕES ==================== */
 
-    // ==================== PARÂMETROS DE CRIAÇÃO DE CAMINHÕES ====================
+    /** Quantidade de caminhões de 2 toneladas. */
     public static final int QTD_CAMINHOES_2T = 8;
+    /** Número de viagens por dia para caminhões de 2 toneladas. */
     public static final int VIAGENS_CAMINHOES_2T = 5;
+    /** Capacidade dos caminhões de 2 toneladas. */
     public static final int CAPACIDADE_CAMINHOES_2T = 2;
 
+    /** Quantidade de caminhões de 4 toneladas. */
     public static final int QTD_CAMINHOES_4T = 5;
+    /** Número de viagens por dia para caminhões de 4 toneladas. */
     public static final int VIAGENS_CAMINHOES_4T = 3;
+    /** Capacidade dos caminhões de 4 toneladas. */
     public static final int CAPACIDADE_CAMINHOES_4T = 4;
 
+    /** Quantidade de caminhões de 8 toneladas. */
     public static final int QTD_CAMINHOES_8T = 4;
+    /** Número de viagens por dia para caminhões de 8 toneladas. */
     public static final int VIAGENS_CAMINHOES_8T = 5;
+    /** Capacidade dos caminhões de 8 toneladas. */
     public static final int CAPACIDADE_CAMINHOES_8T = 8;
 
+    /** Quantidade de caminhões de 10 toneladas. */
     public static final int QTD_CAMINHOES_10T = 3;
+    /** Número de viagens por dia para caminhões de 10 toneladas. */
     public static final int VIAGENS_CAMINHOES_10T = 3;
+    /** Capacidade dos caminhões de 10 toneladas. */
     public static final int CAPACIDADE_CAMINHOES_10T = 10;
 
-    // ==================== PARÂMETROS DE SIMULAÇÃO ====================
+    /* ==================== PARÂMETROS DE SIMULAÇÃO ==================== */
     /**
-     * Tempo máximo de espera permitido nas estações de transferência para os caminhões pequenos.
+     * Tempo máximo de espera (em minutos) permitido para um caminhão pequeno na fila da estação.
      */
-    public static final int TEMPO_MAX_ESPERA_ESTACAO = 50; // em minutos
-
+    public static final int TEMPO_MAX_ESPERA_ESTACAO = 50;
     /**
-     * Tempo de deslocamento padrão quando um caminhão se move para outra zona sem coletar.
+     * Tolerância de espera do caminhão grande (em minutos) para partir com carga parcial. Ex: 120min = 2 horas.
      */
-    public static final int TEMPO_VIAGEM_ENTRE_ZONAS = 30; // em minutos
+    public static final int TOLERANCIA_ESPERA_CAMINHAO_GRANDE = 120;
 
-
-    /**
-     * Tolerância de espera do caminhão grande para partir com carga parcial (em minutos).
-     */
-    public static final int TOLERANCIA_ESPERA_CAMINHAO_GRANDE = 120; // Ex: 2 horas
-
-    /**
-     * Menor quantidade de lixo gerada por dia na zona Sul (em toneladas).
-     */
+    /** Menor quantidade de lixo gerada por dia na zona Sul (em toneladas). */
     public static final int LIXO_MIN_SUL = 20;
-
-    /**
-     * Maior quantidade de lixo gerada por dia na zona Sul (em toneladas).
-     */
+    /** Maior quantidade de lixo gerada por dia na zona Sul (em toneladas). */
     public static final int LIXO_MAX_SUL = 40;
 
-    /**
-     * Menor quantidade de lixo gerada por dia na zona Norte (em toneladas).
-     */
+    /** Menor quantidade de lixo gerada por dia na zona Norte (em toneladas). */
     public static final int LIXO_MIN_NORTE = 15;
-
-    /**
-     * Maior quantidade de lixo gerada por dia na zona Norte (em toneladas).
-     */
+    /** Maior quantidade de lixo gerada por dia na zona Norte (em toneladas). */
     public static final int LIXO_MAX_NORTE = 30;
 
-    /**
-     * Menor quantidade de lixo gerada por dia na zona Centro (em toneladas).
-     */
+    /** Menor quantidade de lixo gerada por dia na zona Centro (em toneladas). */
     public static final int LIXO_MIN_CENTRO = 10;
-
-    /**
-     * Maior quantidade de lixo gerada por dia na zona Centro (em toneladas).
-     */
+    /** Maior quantidade de lixo gerada por dia na zona Centro (em toneladas). */
     public static final int LIXO_MAX_CENTRO = 20;
 
-    /**
-     * Menor quantidade de lixo gerada por dia na zona Leste (em toneladas).
-     */
+    /** Menor quantidade de lixo gerada por dia na zona Leste (em toneladas). */
     public static final int LIXO_MIN_LESTE = 15;
-
-    /**
-     * Maior quantidade de lixo gerada por dia na zona Leste (em toneladas).
-     */
+    /** Maior quantidade de lixo gerada por dia na zona Leste (em toneladas). */
     public static final int LIXO_MAX_LESTE = 25;
 
-    /**
-     * Menor quantidade de lixo gerada por dia na zona Sudeste (em toneladas).
-     */
+    /** Menor quantidade de lixo gerada por dia na zona Sudeste (em toneladas). */
     public static final int LIXO_MIN_SUDESTE = 18;
-
-    /**
-     * Maior quantidade de lixo gerada por dia na zona Sudeste (em toneladas).
-     */
+    /** Maior quantidade de lixo gerada por dia na zona Sudeste (em toneladas). */
     public static final int LIXO_MAX_SUDESTE = 35;
 
-
-
     /**
-     * Aumento do tempo de viagem em horários de muito trânsito.
+     * Fator de multiplicação aplicado ao tempo de viagem em horários de pico.
      */
     public static final double MULTIPLICADOR_TEMPO_PICO = 1.3;
 
     /**
-     * Tempo normal de viagem em horários tranquilos.
+     * Fator de multiplicação aplicado ao tempo de viagem em horários normais (fora de pico).
      */
     public static final double MULTIPLICADOR_TEMPO_FORA_PICO = 1.0;
 
-    // ==================== HORÁRIOS DE TRÂNSITO ====================
-
     /**
-     * Hora de início do trânsito intenso pela manhã.
-     */
-    public static final int HORA_INICIO_PICO_MANHA = 6;
-
-    /**
-     * Hora de fim do trânsito intenso pela manhã.
-     */
-    public static final int HORA_FIM_PICO_MANHA = 9;
-
-    /**
-     * Hora de início do trânsito intenso à tarde.
-     */
-    public static final int HORA_INICIO_PICO_TARDE = 17;
-
-    /**
-     * Hora de fim do trânsito intenso à tarde.
-     */
-    public static final int HORA_FIM_PICO_TARDE = 19;
-
-    /**
-     * Verifica se uma hora está em período de muito trânsito.
-     *
-     * @param hora Hora do dia (0 a 23)
-     * @return Verdadeiro se for horário de pico, falso se não for
-     */
-    public static boolean isHorarioDePico(int hora) {
-        return (hora >= HORA_INICIO_PICO_MANHA && hora < HORA_FIM_PICO_MANHA)
-                || (hora >= HORA_INICIO_PICO_TARDE && hora < HORA_FIM_PICO_TARDE);
-    }
-
-    /**
-     * Não permite criar objetos desta classe, pois ela só guarda valores fixos.
+     * Construtor privado para impedir que esta classe de utilitários seja instanciada.
      */
     private configuracao() {
-        // Impede a criação de objetos
     }
 }

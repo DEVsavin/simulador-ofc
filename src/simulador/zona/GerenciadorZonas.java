@@ -5,8 +5,9 @@ import simulador.caminhoes.CaminhaoPequeno;
 import simulador.estacoes.EstacaoDeTransferencia;
 
 /**
- * Mapeia zonas da cidade às estações de transferência.
- * Esta classe agora funciona como um objeto que é instanciado no início da simulação.
+ * Mapeia zonas da cidade às suas respectivas estações de transferência.
+ * Esta classe funciona como um objeto central de configuração que é instanciado
+ * no início da simulação para gerenciar as relações geográficas e a frota.
  */
 public class GerenciadorZonas {
 
@@ -16,10 +17,10 @@ public class GerenciadorZonas {
     private Lista<CaminhaoPequeno> caminhoes;
 
     /**
-     * Construtor que configura o gerenciador com as estações de transferência.
+     * Construtor que configura o gerenciador com as duas estações de transferência.
      *
-     * @param a Estação A (Leste, Norte, Centro)
-     * @param b Estação B (Sul, Sudeste)
+     * @param a Estação de Transferência A (atende Leste, Norte, Centro).
+     * @param b Estação de Transferência B (atende Sul, Sudeste).
      */
     public GerenciadorZonas(EstacaoDeTransferencia a, EstacaoDeTransferencia b) {
         this.estacaoA = a;
@@ -27,11 +28,11 @@ public class GerenciadorZonas {
     }
 
     /**
-     * Retorna a estação correspondente a uma zona.
+     * Retorna a estação de transferência responsável por uma determinada zona.
      *
-     * @param zona Zona a ser verificada
-     * @return Estação responsável
-     * @throws IllegalArgumentException se a zona for desconhecida
+     * @param zona A zona a ser verificada.
+     * @return A instância da {@link EstacaoDeTransferencia} correspondente.
+     * @throws IllegalArgumentException se a zona não for mapeada para nenhuma estação.
      */
     public EstacaoDeTransferencia getEstacaoPara(Zona zona) {
         String nome = zona.getNome().toLowerCase();
@@ -48,49 +49,21 @@ public class GerenciadorZonas {
     }
 
     /**
-     * Define a lista de zonas da simulação.
+     * Define a lista de zonas geográficas que fazem parte da simulação.
      *
-     * @param listaZonas Lista de zonas
+     * @param listaZonas A lista completa de zonas.
      */
     public void setZonas(Lista<Zona> listaZonas) {
         this.zonas = listaZonas;
     }
 
     /**
-     * Define a lista de caminhões da simulação.
+     * Define a frota de caminhões pequenos da simulação.
      *
-     * @param listaCaminhoes Lista de caminhões
+     * @param listaCaminhoes A lista de caminhões pequenos a ser gerenciada.
      */
     public void setCaminhoes(Lista<CaminhaoPequeno> listaCaminhoes) {
         this.caminhoes = listaCaminhoes;
     }
 
-    /**
-     * Retorna a lista de todas as zonas.
-     *
-     * @return Lista de zonas
-     */
-    public Lista<Zona> getTodasZonas() {
-        return zonas;
-    }
-
-    /**
-     * Retorna os caminhões com viagens disponíveis.
-     *
-     * @return Lista de caminhões ativos
-     */
-    public Lista<CaminhaoPequeno> getCaminhoesAtivos() {
-        if (caminhoes == null) {
-            return new Lista<>(); // Retorna uma lista vazia se não houver caminhões definidos
-        }
-
-        Lista<CaminhaoPequeno> ativos = new Lista<>();
-        for (int i = 0; i < caminhoes.getTamanho(); i++) {
-            CaminhaoPequeno caminhao = caminhoes.getValor(i);
-            if (caminhao.podeRealizarNovaViagem()) {
-                ativos.adicionar(ativos.getTamanho(), caminhao);
-            }
-        }
-        return ativos;
-    }
 }
